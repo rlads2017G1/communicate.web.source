@@ -44,26 +44,29 @@ h1n1_Japan <- h1n1_country("Japan") %>% select(YMD, Cases)
 Japan <- left_join(tour_2009_10_Japan,h1n1_Japan,by="YMD") %>% mutate(Count=Count/100)
 Japan <- xts(Japan, order.by=(Japan$YMD))[,-1]
 
+pl_h1n1_kr <- function() {
+    dygraph(Korea, main = "Korea", group = "H1N1") %>%
+        dyOptions(axisLabelFontSize = 12, axisLineWidth = 0.8, drawGrid=F) %>%
+        dySeries("Cases", axis = 'y2', label = "H1N1病例", color = hue_pal()(2)[1]) %>%
+        dySeries("Count", axis = 'y', label = "旅遊人數(百人)", color=hue_pal()(2)[2]) %>%
+        dyAxis("y", label = "旅遊人數(百)",axisLabelColor = hue_pal()(2)[2]) %>%
+        dyAxis("y2", label = "H1N1病例",axisLabelColor = hue_pal()(2)[1],independentTicks = TRUE) %>%
+        dyRangeSelector(height = 20, strokeColor = "") %>%
+        dyHighlight(highlightSeriesOpts = list(strokeWidth = 3),highlightSeriesBackgroundAlpha = 1) %>%
+        dyLegend(labelsSeparateLines=T)
+    }
 
-dygraph(Korea, main = "Korea", group = "H1N1") %>%
-    dyOptions(axisLabelFontSize = 12, axisLineWidth = 0.8, drawGrid=F) %>%
-    dySeries("Cases", axis = 'y2', label = "H1N1病例", color = hue_pal()(2)[1]) %>%
-    dySeries("Count", axis = 'y', label = "旅遊人數(百人)", color=hue_pal()(2)[2]) %>%
-    dyAxis("y", label = "旅遊人數(百)",axisLabelColor = hue_pal()(2)[2]) %>%
-    dyAxis("y2", label = "H1N1病例",axisLabelColor = hue_pal()(2)[1],independentTicks = TRUE) %>%
-    dyRangeSelector(height = 20, strokeColor = "") %>%
-    dyHighlight(highlightSeriesOpts = list(strokeWidth = 3)) %>%
-    dyLegend(labelsSeparateLines=T)
+pl_h1n1_jp <- function() {
+    dygraph(Japan, main = "Japan", group = "H1N1") %>%
+        dyOptions(axisLabelFontSize = 12, axisLineWidth = 0.8, drawGrid=F) %>%
+        dySeries("Cases", axis = 'y2', label = "H1N1病例", color = hue_pal()(2)[1]) %>%
+        dySeries("Count", axis = 'y', label = "旅遊人數(百人)", color=hue_pal()(2)[2]) %>%
+        dyAxis("y", label = "旅遊人數(百)",axisLabelColor = hue_pal()(2)[2]) %>%
+        dyAxis("y2", label = "H1N1病例",axisLabelColor = hue_pal()(2)[1],independentTicks = TRUE) %>%
+        dyRangeSelector(height = 20, strokeColor = "") %>%
+        dyHighlight(highlightSeriesOpts = list(strokeWidth = 3),highlightSeriesBackgroundAlpha = 1) %>%
+        dyLegend(labelsSeparateLines=T)
+    }
 
-dygraph(Japan, main = "Japan", group = "H1N1") %>%
-    dyOptions(axisLabelFontSize = 12, axisLineWidth = 0.8, drawGrid=F) %>%
-    dySeries("Cases", axis = 'y2', label = "H1N1病例", color = hue_pal()(2)[1]) %>%
-    dySeries("Count", axis = 'y', label = "旅遊人數(百人)", color=hue_pal()(2)[2]) %>%
-    dyAxis("y", label = "旅遊人數(百)",axisLabelColor = hue_pal()(2)[2]) %>%
-    dyAxis("y2", label = "H1N1病例",axisLabelColor = hue_pal()(2)[1],independentTicks = TRUE) %>%
-    dyRangeSelector(height = 20, strokeColor = "") %>%
-    dyHighlight(highlightSeriesOpts = list(strokeWidth = 3)) %>%
-    dyLegend(labelsSeparateLines=T)
-
-dygraph(Japan, main = "Japan", group = "H1N1")
-dygraph(Korea, main = "Korea", group = "H1N1")
+# dygraph(Japan, main = "Japan", group = "H1N1")
+# dygraph(Korea, main = "Korea", group = "H1N1")

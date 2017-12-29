@@ -1,0 +1,148 @@
+---
+title: ''
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+## rankingkable.csv
+> **民國86年-105年(1997-2016) 台灣人最常去的地方前十名** (註：本資料已去除「未列名」的部分)
+
+```{r, echo=FALSE}
+library(readr)
+library(knitr)
+
+rankingkable <- read_csv("./rankingkable.csv")
+rankingkable <- as.data.frame(rankingkable)
+kable(rankingkable)
+```
+
+## rankingline.csv
+> **民國86年-105年(1997-2016) 台灣人最常去的地方人數變化圖** (註：本資料已去除「未列名」的部分)
+
+```{r, echo=FALSE}
+library(readr)
+library(ggplot2)
+library(plotly)
+rankingline <- read_csv("./rankingline.csv")
+rankingline <- as.data.frame(rankingline)
+
+gp=ggplot(rankingline, mapping = aes(x=Year, y=`number of visitors`))+
+    geom_line(mapping = aes(color=Location))+
+    scale_x_continuous(limits=c(1997,2016) ,breaks=1997:2016)+
+    scale_y_continuous(breaks=seq(0, 5000000, by=500000))+
+    labs(title = "民國86-105年(1997-2016) 台灣人最常去的地方")+
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplotly(gp)
+```
+
+## Cross-strait_charters_weekends08.jpg
+![](C:/Users/user/Desktop/R/Final Project/Liao/Cross-strait_charters_weekends08.jpg)
+
+## Cross-strait_daily_charter_route_map.jpg
+![](C:/Users/user/Desktop/R/Final Project/Liao/Cross-strait_daily_charter_route_map.jpg)
+
+## 直航定期化 2009.08.31.png
+![](C:/Users/user/Desktop/R/Final Project/Liao/直航定期化 2009.08.31.png)
+
+## 2009.09 兩岸直航單月班次次數及載客率變化圖.png
+![](C:/Users/user/Desktop/R/Final Project/Liao/2009.09 兩岸直航單月班次次數及載客率變化圖.png)
+
+
+## m2008.csv
+## m2009.csv
+## m2010.csv
+## m2008_2010.csv
+> ### 觀察97-99的台灣前往東亞地區(亦為前5名)的月資料
+
+```{r}
+library(readr)
+library(dplyr)
+
+m2008 <- read_csv("./m2008.csv")
+m2009 <- read_csv("./m2009.csv")
+m2010 <- read_csv("./m2010.csv")
+
+m2008_2010 <- read_csv("./m2008_2010.csv")
+
+
+library(ggplot2)
+library(plotly)
+gp=ggplot(m2008,mapping = aes(x=Month, y=`number of visitors`))+
+    geom_line(mapping = aes(color=Location))+
+    scale_x_continuous(limits=c(1,12) ,breaks=1:12)+
+    scale_y_continuous(breaks=seq(0, 300000, by=20000))+
+    labs(title = "民國97年(2008) 台灣人前往東亞地區月資料")
+ggplotly(gp)
+
+gp=ggplot(m2009,mapping = aes(x=Month, y=`number of visitors`))+
+    geom_line(mapping = aes(color=Location))+
+    scale_x_continuous(limits=c(1,12) ,breaks=1:12)+
+    scale_y_continuous(breaks=seq(0, 300000, by=20000))+
+    labs(title = "民國98年(2009) 台灣人前往東亞地區月資料")
+ggplotly(gp)
+
+gp=ggplot(m2010,mapping = aes(x=Month, y=`number of visitors`))+
+    geom_line(mapping = aes(color=Location))+
+    scale_x_continuous(limits=c(1,12) ,breaks=1:12)+
+    scale_y_continuous(breaks=seq(0, 300000, by=20000))+
+    labs(title = "民國99年(2010) 台灣人前往東亞地區月資料")
+ggplotly(gp)
+
+
+mlabels=unique(m2008_2010$Month)
+m2008_2010$Month = factor(m2008_2010$Month, labels=mlabels, ordered=T)
+
+gp=ggplot(m2008_2010,mapping = aes(x=Month, y=`number of visitors`, group=Location))+
+    # geom_line() + 
+    geom_line(mapping = aes(color=Location))+
+    #scale_x_continuous(limits=c(1,36) ,breaks=1:36)+
+    scale_y_continuous(breaks=seq(0, 300000, by=20000))+
+    labs(title = "民國97-99年(2008-2010) 台灣人前往東亞地區月資料")+
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplotly(gp)
+```
+
+
+## China08_17
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+China08_17 <- read_csv("./China08_17.csv")
+
+mlabels=unique(China08_17$Month)
+China08_17$Month = factor(China08_17$Month, labels=mlabels, ordered=T)
+
+gp=ggplot(China08_17,mapping = aes(x=Month, y=`number of visitors`, group=Location))+
+    geom_line(mapping = aes(color=Location))+
+        geom_smooth(method="lm",formula=y~poly(x, 3),color="skyblue")+
+    scale_y_continuous(breaks=seq(0, 450000, by=30000))+
+    labs(title = "民國97-106年(2008-now)台灣人前往中國的月資料")+
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplotly(gp)
+```
+
+## newm2012_2017.csv
+> ### 觀察過去五、六年台灣最常去的地區月資料
+
+```{r}
+library(readr)
+library(ggplot2)
+library(plotly)
+
+newm2012_2017 <- read_csv("./newm2012_2017.csv")
+
+mlabels=unique(newm2012_2017$Month)
+newm2012_2017$Month = factor(newm2012_2017$Month, labels=mlabels, ordered=T)
+
+gp=ggplot(newm2012_2017,mapping = aes(x=Month, y=`number of visitors`, group=Location))+
+    geom_line(mapping = aes(color=Location))+
+    scale_y_continuous(breaks=seq(0, 450000, by=30000))+
+    labs(title = "民國101-106年(2012-2017) 台灣人最常前往的地區月資料")+
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplotly(gp)
+
+```
