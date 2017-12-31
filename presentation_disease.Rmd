@@ -1,0 +1,126 @@
+---
+title: "疾病"
+author: 第一組
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    theme: bootstrap
+    social: [ "facebook", "menu" ]
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set("eval"=T,message=FALSE, warning=FALSE,comment="") # set global: overide indi. chunks 
+library(flexdashboard)
+source("./china/plot_2008_10.R",encoding="utf-8")
+source("./china/plot_table.R",encoding="utf-8")
+source("./china/plot_yearly.R",encoding="utf-8")
+source("./unemployment.disease/plot_unemployment.R",encoding="utf-8")
+source("./currency/plot_curr.R",encoding="utf-8")
+source("./unemployment.disease/plot_SARS.R",encoding="utf-8")
+source("./unemployment.disease/plot_h1n1.R",encoding="utf-8")
+```
+
+SARS {data-navmenu="疾病" data-icon="ion-arrow-graph-down-right"}
+===========================================
+
+Row {.tabset}
+----------------------------
+
+### 旅遊人數
+
+```{r echo=FALSE}
+ggplotly(pl_tour_year)
+```
+> 2003：旅遊人數大暴跌
+
+### 2003 桃機出境人數
+
+```{r echo=FALSE}
+pl_depart_2003
+```
+
+SARS對臺灣出國旅遊 {.sidebar}
+-------------------------------------
+
+<br>
+
+#### **旅遊人數**
+
+* 2003年臺灣出國旅遊人數明顯下降
+
+* 同年，SARS疫情也在中國、臺灣爆發
+
+<br>
+
+#### **2003桃機出境人數**
+
+* SARS的疫情(綠)與出境人數(紅)有明顯負向關聯
+
+* 此關聯與季節性出境人數之週期無關(藍線，2003出境人數)
+
+
+H1N1 {data-navmenu="疾病" data-icon="ion-medkit"}
+===========================================
+
+row1 {.tabset}
+--------------------
+
+### Japan H1N1
+```{r echo=FALSE}
+pl_h1n1_jp_09_10
+```
+
+### Korea H1N1
+```{r echo=FALSE}
+pl_h1n1_kr_09_10
+```
+
+row2 {.tabset}
+-------------------
+
+### Jp: 2007-2008
+```{r echo=FALSE}
+pl_h1n1_jp_07_08
+```
+
+### Jp: 2011-2012
+```{r echo=FALSE}
+pl_h1n1_jp_11_12
+```
+
+### Kor: 2007-2008
+```{r echo=FALSE}
+pl_h1n1_kr_07_08
+```
+
+### Kor: 2011-2012
+```{r echo=FALSE}
+pl_h1n1_kr_11_12
+```
+
+H1N1 {.sidebar}
+-------------------------------------
+
+<br>
+
+#### Upper Row: **H1N1大流行**
+
+* 日本、韓國: 2009-10 H1N1大流行
+
+* H1N1疫情與旅遊人數**似乎有負向關聯**
+
+<br>
+
+#### Lower Row: **沒有H1N1影響**
+
+* 旅遊人數波動與2009-10**類似**
+
+* H1N1疫情**無法解釋**旅遊人數的改變
+
+<br>
+<br>
+<br>
+<br>
+
+註：可拖拉調整時間軸尺度

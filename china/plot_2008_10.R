@@ -33,21 +33,21 @@ pl_2008_ea <- ggplot(m2008,mapping = aes(x=Month, y=Travelers/10000))+
     geom_line(mapping = aes(color=Location))+
     scale_x_continuous(limits=c(1,12) ,breaks=1:12)+
     scale_y_continuous(breaks=seq(0, 30, by=2))+
-    labs(title = "2008 台灣人前往東亞地區",x="月份",y="萬人\n\n",color="")
+    labs(title = "2008 台灣人前往東亞地區",x="月份",y="萬人\n \n",color="")
 # ggplotly(pl_2008_ea)
 
 pl_2009_ea <- ggplot(m2009,mapping = aes(x=Month, y=Travelers/10000))+
     geom_line(mapping = aes(color=Location))+
     scale_x_continuous(limits=c(1,12) ,breaks=1:12)+
     scale_y_continuous(breaks=seq(0, 30, by=2))+
-    labs(title = "2009 台灣人前往東亞地區",x="月份",y="萬人\n\n",color="")
+    labs(title = "2009 台灣人前往東亞地區",x="月份",y="萬人\n \n",color="")
 # ggplotly(pl_2009_ea)
 
 pl_2010_ea <- ggplot(m2010,mapping = aes(x=Month, y=Travelers/10000))+
     geom_line(mapping = aes(color=Location))+
     scale_x_continuous(limits=c(1,12) ,breaks=1:12)+
     scale_y_continuous(breaks=seq(0, 30, by=2))+
-    labs(title = "2010 台灣人前往東亞地區",x="月份",y="萬人\n\n",color="")
+    labs(title = "2010 台灣人前往東亞地區",x="月份",y="萬人\n \n",color="")
 # ggplotly(pl_2010_ea)
 
 
@@ -59,21 +59,21 @@ pl_2008_10_ea <- ggplot(m2008_2010,mapping = aes(x=Month, y=Travelers/10000, gro
     geom_line(mapping = aes(color=Location))+
     scale_x_discrete(breaks=m2008_2010$Month[index]) +
     scale_y_continuous(breaks=seq(0, 30, by=2))+
-    labs(title = "2008-2010 台灣人前往東亞地區(月)",x=" ",y="萬人\n\n",color="")+
+    labs(title = "2008-2010 台灣人前往東亞地區(月)",x=" ",y="萬人\n \n",color="")+
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 # ggplotly(pl_2008_10_ea)
 
 
 mlabels=unique(China08_17$Month)
 China08_17$Month = factor(China08_17$Month, labels=mlabels, ordered=T)
-index <- seq.int(1, length(China08_17$Month), by=2)
+index <- seq.int(1, length(China08_17$Month), by=3)
 
 pl_2008_17_ch <- ggplot(China08_17,mapping = aes(x=Month, y=Travelers/10000, group=Location))+
     geom_line(mapping = aes(color=Location))+
     geom_smooth(method="lm",formula=y~poly(x, 3),color="skyblue")+
     scale_x_discrete(breaks=China08_17$Month[index]) +
     scale_y_continuous(breaks=seq(0, 45, by=3))+
-    labs(title = "2008-2017(Oct) 台灣人前往中國(月)",x=" ",y="萬人\n\n",color="")+
+    labs(title = "2008-2017 台灣人前往中國(月)",x=" ",y="萬人<br> <br>",color="")+
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 # ggplotly(pl_2008_17_ch)
 
@@ -87,6 +87,6 @@ pl_2012_17_all <- ggplot(newm2012_2017,mapping = aes(x=Month, y=Travelers/10000,
     geom_line(mapping = aes(color=Location))+
     scale_x_discrete(breaks=newm2012_2017$Month[index]) +
     scale_y_continuous(breaks=seq(0, 45, by=3))+
-    labs(title = "2012-2017(Oct) 台灣人最常前往地區(月)",x=" ",y="萬人\n\n",color="")+
+    labs(title = "2012-2017 台灣人最常前往地區(月)",x=" ",y="萬人\n \n",color="")+
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 # ggplotly(pl_2012_17_all)

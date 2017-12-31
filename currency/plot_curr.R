@@ -5,6 +5,7 @@ library(plotly)
 library(tidyr)
 library(dygraphs)
 library(xts)
+library(scales)
 
 curr <- read_csv("./currency/NTD_against_JP_KR.csv") %>%
     separate(MONTH, into = c('year', 'month'), sep =-3) %>%
@@ -16,11 +17,11 @@ curr <- curr %>%
 curr <- xts(curr, order.by = curr$date)[,-1]
 
 
-pl_curr <- dygraph(curr, main = "台幣兌日/韓匯率") %>%
+pl_curr <- dygraph(curr, main = "2002-2017(月) 台幣兌日/韓匯率") %>%
     dyOptions(axisLabelFontSize = 12, axisLineWidth = 0.8, drawGrid=F) %>%
-    dySeries("NTD_JPY", axis = 'y', label = "日幣", color=hue_pal()(2)[2]) %>%
+    dySeries("NTD_JPY", axis = 'y', label = "日圓", color=hue_pal()(2)[2]) %>%
     dySeries("NTD_KRW", axis = 'y2', label = "韓元", color = hue_pal()(2)[1]) %>%
-    dyAxis("y", label = "日幣/新台幣",axisLabelColor = hue_pal()(2)[2]) %>%
+    dyAxis("y", label = "日圓/新台幣",axisLabelColor = hue_pal()(2)[2]) %>%
     dyAxis("y2", label = "韓元/新台幣",axisLabelColor = hue_pal()(2)[1],independentTicks = TRUE) %>%
     dyRangeSelector(height = 20, strokeColor = "") %>%
     dyHighlight(highlightSeriesOpts = list(strokeWidth = 3),highlightSeriesBackgroundAlpha = 1) %>%

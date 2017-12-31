@@ -19,12 +19,12 @@ tour_unem <- read_csv("./unemployment.disease/data/unemployment_tour.csv") %>% #
     select(Year, Count, rate)
 
 
-dygraph(tour_unem) %>%
+pl_unem <- dygraph(tour_unem,main="2001-2015 失業率vs.出國旅遊人數") %>%
     dyOptions(axisLabelFontSize = 12, axisLineWidth = 0.8, drawGrid=F) %>%
     dyAxis("y", label = "旅遊人數(百萬)",axisLabelColor = hue_pal()(2)[2]) %>%
     dyAxis("y2", label = "失業率(%)",axisLabelColor = hue_pal()(2)[1],independentTicks = TRUE) %>%
     dySeries("rate", axis = 'y2', label = "失業率(%)", color = hue_pal()(2)[1]) %>%
     dySeries("Count", axis = 'y', label = "旅遊人數(百萬)", color=hue_pal()(2)[2]) %>%
-    dyRangeSelector(height = 20, strokeColor = "") %>%
-    dyHighlight(highlightSeriesOpts = list(strokeWidth = 3)) %>%
+    # dyRangeSelector(height = 20, strokeColor = "") %>%
+    dyHighlight(highlightSeriesOpts = list(strokeWidth = 3),highlightSeriesBackgroundAlpha = 1) %>%
     dyLegend(labelsSeparateLines=T)

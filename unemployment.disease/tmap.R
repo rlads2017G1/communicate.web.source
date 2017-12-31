@@ -3,13 +3,13 @@
 ## NOTE !!! 
 ## load library carefully !!! Something may go wrong!
 
-library(tmap)
-library(tmaptools)
 library(readr)
 library(dplyr)
 library(leaflet)
 library(sp)
 library(rgdal)
+library(tmap)
+library(tmaptools)
 options(scipen=999)
 
 tour_code <- read_csv("./unemployment.disease/data/TourCount_CountryCode.csv")
@@ -44,7 +44,7 @@ World.2010 <- spTransform(World.2010, CRS("+init=epsg:4326"))
 bins <- c(100, 5000, 10000, 50000, 100000, 200000, 500000, 1000000, 3000000, 4000000)
 pal <- colorBin("YlOrRd", domain = World.2015$count, bins = bins)
 
-pl.World.year <- function(World.year, lon=12, lat=35, zoom=1.55, Legend.title="Travelers") {
+pl.World.year <- function(World.year, lon=16, lat=39, zoom=1.52, Legend.title="Travelers") {
     labels <- sprintf("<strong>%s</strong><br/>%g people",
                       World.year$name, World.year$count) %>% 
         lapply(htmltools::HTML)
@@ -69,10 +69,17 @@ pl.World.year <- function(World.year, lon=12, lat=35, zoom=1.55, Legend.title="T
                         style = list("font-weight" = "normal", padding = "3px 8px"),
                         textsize = "15px",
                         direction = "auto")) %>%
-        addLegend(pal = pal, values = ~count, opacity = 0.7,
-                  position = "bottomleft", title = Legend.title)
+        addLegend(pal = pal, values = ~count, opacity = 0.5,
+                  position = "topright", title = Legend.title)
 }
 
+World_2015_c <- pl.World.year(World.2015,lon=45,zoom=1.5,Legend.title = "Travelers: 2015")
+World_2015 <- pl.World.year(World.2015,Legend.title = "Travelers: 2015")
+World_2014 <- pl.World.year(World.2014,Legend.title = "Travelers: 2014")
+World_2013 <- pl.World.year(World.2013,Legend.title = "Travelers: 2013")
+World_2012 <- pl.World.year(World.2012,Legend.title = "Travelers: 2012")
+World_2011 <- pl.World.year(World.2011,Legend.title = "Travelers: 2011")
+World_2010 <- pl.World.year(World.2010,Legend.title = "Travelers: 2010")
 
 
 # labels <- sprintf(

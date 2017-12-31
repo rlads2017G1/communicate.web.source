@@ -12,6 +12,12 @@ options(scipen=999)
 #---------------------------------------------------------
 lo<- function(x) {str_replace_all(x,"合計","地區")}
 
+## tour Country
+tour_country <- function(country) {
+    tour_country <- tour %>%
+        filter(grepl(country, Location))
+}
+
 tour <- read_csv("C:/Users/user/DS_project/liao/tour.csv", col_names = FALSE) %>%
     rename("Year"=X1,"Location"=X2,"Count"=X3) %>%
     mutate(year=as.Date(paste(Year+1911,"-01-01", sep=""))) %>%
@@ -31,6 +37,9 @@ tour_total <- bind_rows(non_region, other_region) %>%  #旅遊總人數
     mutate(Location="總人數") %>%
     select(Year,Location,Count)
 
+tour_continent <- tour %>%
+    filter(grepl("地區",Location)) %>%
+    filter(!grepl("其他地區",Location))
 
 tour_asia <- tour_continent %>%
     group_by(Location, Year) %>%
