@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set("eval"=T,message=FALSE, warning=FALSE,comment="") # set global: overide indi. chunks 
+knitr::opts_chunk$set("eval"=T,message=FALSE, warning=FALSE,comment="") # set global: overide indi. chunks source("./china/plot_2008_10.R",encoding="utf-8")
 library(flexdashboard)
 ```
 
@@ -18,7 +18,7 @@ library(flexdashboard)
 source("./unemployment.disease/tmap.R")
 ```
 
-Explore {.storyboard data-navmenu="概觀" data-commentary-width=23 data-icon="ion-ios-search-strong"}
+Ranking {data-navmenu="概觀" data-commentary-width=23 data-icon="glyphicon glyphicon-signal"}
 =========================================
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
@@ -29,7 +29,84 @@ source("./unemployment.disease/plot_unemployment.R",encoding="utf-8")
 source("./currency/plot_curr.R",encoding="utf-8")
 source("./unemployment.disease/plot_SARS.R",encoding="utf-8")
 source("./unemployment.disease/plot_h1n1.R",encoding="utf-8")
+source("./korea/plot_kor.R",encoding="utf-8")
+source("./currency/plot_visa.R",encoding="utf-8")
 ```
+
+row1 {.tabset}
+--------------------
+
+### 旅遊目的地排名變化
+```{r echo=FALSE}
+ggplotly(pl_year_country)
+```
+
+### 排名表
+```{r echo=FALSE}
+table()
+```
+
+### 2008 東亞
+```{r echo=FALSE}
+ggplotly(pl_2008_ea)
+```
+
+### 2009 東亞
+```{r echo=FALSE}
+ggplotly(pl_2009_ea)
+```
+
+### 2010 東亞
+```{r echo=FALSE}
+ggplotly(pl_2010_ea)
+```
+
+### 2008-10 東亞
+```{r echo=FALSE}
+ggplotly(pl_2008_10_ea)
+```
+
+### 2012-17 前十
+```{r echo=FALSE}
+ggplotly(pl_2012_17_all)
+```
+
+
+Ranking {.sidebar}
+-------------------------------------
+
+<br>
+
+#### 排名前十
+
+* 東亞 (中港澳日韓)
+
+* 東南亞 (泰越新馬印尼)
+
+* 美國
+
+<br>
+
+#### 觀察
+
+    
+* 20年前 vs. 近年：**變化劇烈**
+    
+* 中國大陸：2008之後暴增
+    
+* 韓國：2003之後
+
+
+<br>
+
+<div class="absolute">
+註：可將位於圖右側之Legend上的國家按掉，再找到圖上側按Autoscale，如此時間y軸就會調整到最適宜的尺度。
+
+<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
+</div>
+
+Explore {.storyboard data-navmenu="概觀" data-commentary-width=23 data-icon="ion-ios-search-strong"}
+=========================================
 
 ### 究竟旅客人數和什麼有關？
 
@@ -94,8 +171,6 @@ ggplotly(pl_2008_17_ch)
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 World_2015_c
 ```
->
-<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
 
 ***
 
@@ -152,12 +227,6 @@ World_2011
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 World_2010
 ```
-
->
-<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
-
-
-
 
 
 SARS {data-navmenu="疾病" data-icon="ion-arrow-graph-down-right"}
@@ -263,3 +332,222 @@ H1N1 {.sidebar}
 <br>
 
 註：可拖拉調整時間軸尺度
+
+
+Flight {data-navmenu="中國" data-icon="ion-plane"}
+===========================================
+
+row 1 {.tabset data-height=650}
+--------------------
+
+### 2008-10東亞
+```{r echo=FALSE}
+ggplotly(pl_2008_10_ea)
+```
+
+### 問題與假設
+
+<div class="padding">
+
+#### **Q：為什麼增加了這麼多人去中國大陸？**
+
+究竟他們去那邊...？
+
+<br>
+
+#### **假設：**
+
+1. 台商**不透過香港**直接進中國大陸
+
+2. **成本下降**，台商**更頻繁前往**中國大陸
+
+3. 更**方便**，前往中國大陸**旅遊人數增加**
+
+4. 政策及社會氛圍，兩岸**往來更加頻繁**
+
+</div>
+
+
+### 週末包機
+
+<img src="./china/Cross-strait_charters_weekends08.jpg" width="400" height="279">
+
+### 平日包機
+
+<img src="./china/Cross-strait_daily_charter_route_map.jpg" width="427" height="341">
+
+### 載客率 1
+<img src="./china/2009.08.31.png" width="493.5" height="406.5">
+
+### 載客率 2
+<img src="./china/2009.09carrier.png" width="493.5" height="406.5">
+
+row 2 {data-height=350}
+------------------------
+
+### 
+```{r echo=FALSE}
+timevis(flight_ch)
+```
+
+
+sidebar {.sidebar}
+-----------------------
+
+<br>
+
+**2008-10：中國**
+
+
+* 中國：於**2008/12 - 2009/02**成長驚人
+
+* 受**春節**影響
+
+* 2008年12月：**兩岸平日包機**
+
+* 前往中國大陸人數：較前一年同期大幅成長
+
+    
+<br><br>
+
+**兩岸直航大事紀**
+
+```{r echo=FALSE}
+kable(flight_tb,format ='markdown',align='c')
+```
+
+Compare {data-navmenu="中國" data-icon="ion-android-globe"}
+===========================================
+
+row 1 {.tabset}
+---------------------------
+### 2008-2017 China
+```{r echo=FALSE}
+ggplotly(pl_2008_17_ch)
+```
+
+### 2012-2017 China vs. Japan
+```{r echo=FALSE}
+ggplotly(pl_2012_17_2)
+```
+
+### 2012-2017 排名
+```{r echo=FALSE}
+ggplotly(pl_2012_17_all)
+```
+
+
+Korean Wave {data-navmenu="韓國" data-icon="fa-television" data-orientation=columns}
+===========================================
+
+column 1 {.tabset}
+--------------------
+
+### 韓國:年齡
+```{r}
+pl_kor_age_tour
+```
+
+### 韓國:性別
+```{r}
+pl_kor_gender_tour
+```
+
+column 2 {.tabset}
+--------------------
+
+### 日本:年齡
+```{r}
+pl_jp_age_tour
+```
+
+### 日本:性別
+```{r}
+pl_jp_gender_tour
+```
+
+sidebar {.sidebar data-width=240}
+---------------------------
+
+**日本**
+
+年齡、性別：**各族群趨勢一致**(線條平行)
+
+推論：
+    
+* 對日本之偏好**無特定族群差異**
+
+<br>
+
+**韓國**
+
+性別：2001年，女性旅遊人數超越男性
+
+年齡：2000-03年，**20-29歲**(青綠色)與其他年齡層**趨勢迥異**
+
+韓流起始：2000年？
+
+* 韓劇**火花**、**藍色生死戀**開播
+    
+* 自此之後，女性旅客皆比男性多，且**差距不斷地升高**
+    
+
+<div class="absolute">
+
+<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
+</div>
+    
+
+
+Cost {data-navmenu="韓國" data-icon="fa-usd" data-orientation=columns}
+===========================================
+
+column 1 {.tabset data-width=450}
+--------------------
+
+### 日本:按年齡
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+pl_jp_age_tour
+```
+
+### 韓國:按年齡
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+pl_kor_age_tour
+```
+
+### 總人數
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+pl_total
+```
+
+column 2 {.tabset data-width=550}
+--------------------
+
+### 匯率
+```{r echo=FALSE}
+pl_curr
+```
+
+
+
+其他因素 {data-orientation=rows}
+===========================================
+
+row1 {data-height=680}
+---------------------
+
+###
+```{r echo=FALSE}
+ggplotly(pl_visa_country)
+```
+
+row2 {data-height=320}
+--------------------
+
+###
+```{r echo=FALSE}
+timevis(visa)
+```
+
+
+

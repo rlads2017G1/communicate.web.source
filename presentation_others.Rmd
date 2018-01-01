@@ -1,0 +1,34 @@
+---
+title: "Other Factors"
+author: 第一組
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    theme: bootstrap
+    social: [ "facebook", "menu" ]
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+source("./currency/plot_visa.R",encoding="utf-8")
+```
+
+Visa {data-navmenu="其他因素" data-icon="ion-android-checkbox"} 
+==============================
+
+row 1 {data-height=700}
+---------------------------
+
+### 2000-2015 免簽國家旅遊人數
+```{r echo=FALSE}
+ggplotly(pl_visa_country)
+```
+
+row 2 {data-height=300}
+---------------------------
+
+### 免簽國家
+```{r echo=FALSE}
+timevis(visa)
+```

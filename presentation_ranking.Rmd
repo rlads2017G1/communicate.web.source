@@ -1,0 +1,104 @@
+---
+title: "前言"
+author: 第一組
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    theme: bootstrap
+    social: [ "facebook", "menu" ]
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set("eval"=T,message=FALSE, warning=FALSE,comment="") # set global: overide indi. chunks 
+library(flexdashboard)
+source("./china/plot_2008_10.R",encoding="utf-8")
+source("./china/plot_table.R",encoding="utf-8")
+source("./china/plot_yearly.R",encoding="utf-8")
+```
+
+
+Ranking {data-navmenu="概觀" data-commentary-width=23 data-icon="glyphicon glyphicon-signal"}
+=========================================
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+source("./china/plot_2008_10.R",encoding="utf-8")
+source("./china/plot_table.R",encoding="utf-8")
+source("./china/plot_yearly.R",encoding="utf-8")
+source("./unemployment.disease/plot_unemployment.R",encoding="utf-8")
+source("./currency/plot_curr.R",encoding="utf-8")
+source("./unemployment.disease/plot_SARS.R",encoding="utf-8")
+source("./unemployment.disease/plot_h1n1.R",encoding="utf-8")
+```
+
+row1 {.tabset}
+--------------------
+
+### 旅遊目的地排名變化
+```{r echo=FALSE}
+ggplotly(pl_year_country)
+```
+
+### 排名表
+```{r echo=FALSE}
+table()
+```
+
+### 2008 東亞
+```{r echo=FALSE}
+ggplotly(pl_2008_ea)
+```
+
+### 2009 東亞
+```{r echo=FALSE}
+ggplotly(pl_2009_ea)
+```
+
+### 2010 東亞
+```{r echo=FALSE}
+ggplotly(pl_2010_ea)
+```
+
+### 2008-10 東亞
+```{r echo=FALSE}
+ggplotly(pl_2008_10_ea)
+```
+
+### 2012-17 前十
+```{r echo=FALSE}
+ggplotly(pl_2012_17_all)
+```
+
+
+Ranking {.sidebar}
+-------------------------------------
+
+<br>
+
+#### 排名前十
+
+* 東亞 (中港澳日韓)
+
+* 東南亞 (泰越新馬印尼)
+
+* 美國
+
+<br>
+
+#### 觀察
+
+    
+* 20年前 vs. 近年：**變化劇烈**
+    
+* 中國大陸：2008之後暴增
+    
+* 韓國：2003之後
+
+
+<br><br><br>
+
+<div class="absolute">
+註：可將位於圖右側之Legend上的國家按掉，再找到圖上側按Autoscale，如此時間y軸就會調整到最適宜的尺度。
+
+<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
+</div>

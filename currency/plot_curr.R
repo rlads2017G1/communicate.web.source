@@ -19,10 +19,10 @@ curr <- xts(curr, order.by = curr$date)[,-1]
 
 pl_curr <- dygraph(curr, main = "2002-2017(月) 台幣兌日/韓匯率") %>%
     dyOptions(axisLabelFontSize = 12, axisLineWidth = 0.8, drawGrid=F) %>%
-    dySeries("NTD_JPY", axis = 'y', label = "日圓", color=hue_pal()(2)[2]) %>%
-    dySeries("NTD_KRW", axis = 'y2', label = "韓元", color = hue_pal()(2)[1]) %>%
-    dyAxis("y", label = "日圓/新台幣",axisLabelColor = hue_pal()(2)[2]) %>%
-    dyAxis("y2", label = "韓元/新台幣",axisLabelColor = hue_pal()(2)[1],independentTicks = TRUE) %>%
+    dySeries("NTD_JPY", axis = 'y', label = "日圓",strokeWidth =1.5,color=hue_pal()(2)[1]) %>%
+    dySeries("NTD_KRW", axis = 'y2', label = "韓元",strokeWidth =1.5,color = hue_pal()(2)[2]) %>%
+    dyAxis("y", label = "日圓/新台幣",axisLabelColor = hue_pal()(2)[1]) %>%
+    dyAxis("y2", label = "韓元/新台幣",axisLabelColor = hue_pal()(2)[2],independentTicks = TRUE) %>%
     dyRangeSelector(height = 20, strokeColor = "") %>%
     dyHighlight(highlightSeriesOpts = list(strokeWidth = 3),highlightSeriesBackgroundAlpha = 1) %>%
     dyLegend(labelsSeparateLines=T)

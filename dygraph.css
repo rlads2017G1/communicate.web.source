@@ -1,0 +1,12 @@
+
+div .dygraphs input[type="text"] {
+  width: 25px;
+}
+
+div .qt .dygraph-axis-label {
+  font-size: 11px;
+}
+
+.dygraph-legend {
+  background-color: transparent !important;
+}

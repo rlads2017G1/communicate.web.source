@@ -1,0 +1,28 @@
+---
+title: "test"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set("eval"=T,message=FALSE, warning=FALSE,comment="") 
+source("./korea/plot_kor.R",encoding="utf-8")
+```
+
+## 總人數
+```{r}
+pl_total
+ggplotly(pl_total_2)
+```
+
+## 年齡層
+```{r}
+pl_kor_age_tour
+pl_jp_age_tour
+```
+
+# 性別
+```{r}
+pl_kor_gender_tour
+pl_jp_gender_tour
+```
+

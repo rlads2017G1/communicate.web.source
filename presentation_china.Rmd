@@ -1,0 +1,120 @@
+---
+title: "中國"
+author: 第一組
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    theme: bootstrap
+    social: [ "facebook", "menu" ]
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set("eval"=T,message=FALSE, warning=FALSE,comment="") # set global: overide indi. chunks 
+library(flexdashboard)
+source("./china/plot_2008_10.R",encoding="utf-8")
+source("./china/plot_table.R",encoding="utf-8")
+source("./china/plot_yearly.R",encoding="utf-8")
+```
+
+Flight {data-navmenu="中國" data-icon="ion-plane"}
+===========================================
+
+row 1 {.tabset data-height=650}
+--------------------
+
+### 2008-10東亞
+```{r echo=FALSE}
+ggplotly(pl_2008_10_ea)
+```
+
+### 問題與假設
+
+<div class="padding">
+
+#### **Q：為什麼增加了這麼多人去中國大陸？**
+
+究竟他們去那邊...？
+
+<br>
+
+#### **假設：**
+
+1. 台商**不透過香港**直接進中國大陸
+
+2. **成本下降**，台商**更頻繁前往**中國大陸
+
+3. 更**方便**，前往中國大陸**旅遊人數增加**
+
+4. 政策及社會氛圍，兩岸**往來更加頻繁**
+
+</div>
+
+
+### 週末包機
+
+<img src="./china/Cross-strait_charters_weekends08.jpg" width="400" height="279">
+
+### 平日包機
+
+<img src="./china/Cross-strait_daily_charter_route_map.jpg" width="427" height="341">
+
+### 載客率 1
+<img src="./china/2009.08.31.png" width="493.5" height="406.5">
+
+### 載客率 2
+<img src="./china/2009.09carrier.png" width="493.5" height="406.5">
+
+row 2 {data-height=350}
+------------------------
+
+### 
+```{r echo=FALSE}
+timevis(flight_ch)
+```
+
+
+sidebar {.sidebar}
+-----------------------
+
+<br>
+
+**2008-10：中國**
+
+
+* 中國：於**2008/12 - 2009/02**成長驚人
+
+* 受**春節**影響
+
+* 2008年12月：**兩岸平日包機**
+
+* 前往中國大陸人數：較前一年同期大幅成長
+
+    
+<br><br>
+
+**兩岸直航大事紀**
+
+```{r echo=FALSE}
+kable(flight_tb,format ='markdown',align='c')
+```
+
+Compare {data-navmenu="中國" data-icon="ion-android-globe"}
+===========================================
+
+row 1 {.tabset}
+---------------------------
+### 2008-2017 China
+```{r echo=FALSE}
+ggplotly(pl_2008_17_ch)
+```
+
+### 2012-2017 China vs. Japan
+```{r echo=FALSE}
+ggplotly(pl_2012_17_2)
+```
+
+### 2012-2017 排名
+```{r echo=FALSE}
+ggplotly(pl_2012_17_all)
+```

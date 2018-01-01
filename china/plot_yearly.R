@@ -1,4 +1,4 @@
-Sys.setlocale(category = "LC_ALL", locale = "cht")
+# Sys.setlocale(category="LC_ALL",locale="cht")
 library(readr)
 library(ggplot2)
 library(plotly)
