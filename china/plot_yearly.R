@@ -14,3 +14,14 @@ pl_year_country <- ggplot(rankingline, mapping = aes(x=Year, y=Travelers/10000))
          x=" ",y="萬人\n\n",color="") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 # ggplotly(pl_year_country)
+
+jp_ch <- rankingline %>% filter(Location=="中國大陸"|Location=="日本")
+
+pl_year_jp_ch <- ggplot(jp_ch, mapping = aes(x=Year, y=Travelers/10000))+
+    geom_line(mapping = aes(color=Location))+
+    scale_x_continuous(limits=c(1997,2016) ,breaks=seq(1997,2016,by=2))+
+    scale_y_continuous(breaks=seq(0, 500, by=50))+
+    labs(title = "1997-2016 台灣人前往中國/日本",
+         x=" ",y="萬人\n\n",color="") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# ggplotly(pl_year_jp_ch)

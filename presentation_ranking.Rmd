@@ -17,10 +17,6 @@ source("./china/plot_table.R",encoding="utf-8")
 source("./china/plot_yearly.R",encoding="utf-8")
 ```
 
-
-Ranking {data-navmenu="概觀" data-commentary-width=23 data-icon="glyphicon glyphicon-signal"}
-=========================================
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 source("./china/plot_2008_10.R",encoding="utf-8")
 source("./china/plot_table.R",encoding="utf-8")
@@ -30,6 +26,10 @@ source("./currency/plot_curr.R",encoding="utf-8")
 source("./unemployment.disease/plot_SARS.R",encoding="utf-8")
 source("./unemployment.disease/plot_h1n1.R",encoding="utf-8")
 ```
+
+
+Ranking {data-navmenu="概觀" data-commentary-width=23 data-icon="glyphicon glyphicon-signal"}
+=========================================
 
 row1 {.tabset}
 --------------------
@@ -88,7 +88,7 @@ Ranking {.sidebar}
 #### 觀察
 
     
-* 20年前 vs. 近年：**變化劇烈**
+* 近年 vs. 20年前：**異軍突起**
     
 * 中國大陸：2008之後暴增
     
@@ -99,6 +99,6 @@ Ranking {.sidebar}
 
 <div class="absolute">
 註：可將位於圖右側之Legend上的國家按掉，再找到圖上側按Autoscale，如此時間y軸就會調整到最適宜的尺度。
-
-<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
 </div>
+
+

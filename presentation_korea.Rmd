@@ -55,7 +55,7 @@ sidebar {.sidebar data-width=240}
 
 推論：
     
-* 對日本之偏好**無特定族群差異**
+* 對日本偏好**無特定族群差異**
 
 <br>
 
@@ -70,14 +70,11 @@ sidebar {.sidebar data-width=240}
 * 韓劇**火花**、**藍色生死戀**開播
     
 * 自此之後，女性旅客皆比男性多，且**差距不斷地升高**
-    
 
 <div class="absolute">
-
-<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
+註:可拖拉橫移時間軸，比較2001年附近日韓的差別
 </div>
     
-
 
 Cost {data-navmenu="韓國" data-icon="fa-usd" data-orientation=columns}
 ===========================================

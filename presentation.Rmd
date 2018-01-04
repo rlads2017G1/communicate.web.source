@@ -1,11 +1,15 @@
 ---
-title: "Main"
-author: 第一組
+title: "Taiwan"
+author: rlads2017 G1
 output: 
   flexdashboard::flex_dashboard:
+    favicon: taiwan.ico
+    source_code: "https://github.com/rlads2017G1/communicate.web.source"
+    navbar:
+      - { title: "Home", href: "https://rlads2017g1.github.io", align: right }
     orientation: rows
     theme: bootstrap
-    social: [ "facebook", "menu" ]
+    social: [ "menu" ]
     vertical_layout: fill
 ---
 
@@ -18,20 +22,21 @@ library(flexdashboard)
 source("./unemployment.disease/tmap.R")
 ```
 
-Ranking {data-navmenu="概觀" data-commentary-width=23 data-icon="glyphicon glyphicon-signal"}
-=========================================
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 source("./china/plot_2008_10.R",encoding="utf-8")
 source("./china/plot_table.R",encoding="utf-8")
 source("./china/plot_yearly.R",encoding="utf-8")
 source("./unemployment.disease/plot_unemployment.R",encoding="utf-8")
-source("./currency/plot_curr.R",encoding="utf-8")
 source("./unemployment.disease/plot_SARS.R",encoding="utf-8")
 source("./unemployment.disease/plot_h1n1.R",encoding="utf-8")
-source("./korea/plot_kor.R",encoding="utf-8")
+source("./unemployment.disease/plot_2015KoreaMERS.R",encoding="utf-8")
+source("./currency/plot_curr.R",encoding="utf-8")
 source("./currency/plot_visa.R",encoding="utf-8")
+source("./korea/plot_kor.R",encoding="utf-8")
 ```
+
+Ranking {data-navmenu="概觀" data-commentary-width=23 data-icon="glyphicon glyphicon-signal"}
+=========================================
 
 row1 {.tabset}
 --------------------
@@ -90,25 +95,36 @@ Ranking {.sidebar}
 #### 觀察
 
     
-* 20年前 vs. 近年：**變化劇烈**
+* 近年 vs. 20年前：**異軍突起**
     
 * 中國大陸：2008之後暴增
     
 * 韓國：2003之後
 
 
-<br>
+<br><br><br>
 
 <div class="absolute">
-註：可將位於圖右側之Legend上的國家按掉，再找到圖上側按Autoscale，如此時間y軸就會調整到最適宜的尺度。
-
-<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
+註：可將位於圖右側之legend上的國家按掉，再到圖上側按Autoscale，y軸就會調整到最適宜尺度。
 </div>
+
 
 Explore {.storyboard data-navmenu="概觀" data-commentary-width=23 data-icon="ion-ios-search-strong"}
 =========================================
 
-### 究竟旅客人數和什麼有關？
+### 究竟旅遊人數和什麼有關？
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+World_2015_c
+```
+
+***
+
+<br>
+
+#### **臺灣出國旅遊目的地**
+
+##### [點此](#dest-map)檢視2010-2015臺灣出國旅遊目的地的互動式地圖
 
 ### 旅遊要資金，**失業率**會影響？
 
@@ -126,9 +142,11 @@ pl_curr
 
 <br>
 
-##### [點此](#korea)看我們針對韓國的研究
+##### [點此](#cost)看我們針對韓國的研究
 
-*註：該圖時間軸可拖拉縮放*
+<div class="absolute">
+註：該圖時間軸可拖拉縮放
+</div>
 
 ### 旅遊要平安，**疾病**會影響？ 看看SARS的威力
 
@@ -140,7 +158,7 @@ pl_depart_2003
 
 <br>
 
-##### [點此](#epid)看我們針對疾病的研究
+##### [點此](#sars)或上方**疾病**，看我們針對疾病的研究
 
 ### 兩岸的恩怨情仇？！ 看看**政治**的影響力
 
@@ -152,34 +170,19 @@ ggplotly(pl_2008_17_ch)
 
 <br>
 
-##### [點此](#china)看我們針對中國大陸的研究
+##### [點此](#flight)或上方**中國**，看我們針對中國大陸的研究
 
-### 年齡層與性別：**韓國**奇特的魅力？
+### 年齡層與性別：**韓流**的魅力？
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-ggplotly(pl_2008_17_ch)
+pl_kor_gender_tour
 ```
 
 ***
 
 <br>
 
-##### [點此](#korea)看我們針對韓國的研究
-
-### 讓我們繼續看下去
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-World_2015_c
-```
-
-***
-
-<br>
-
-#### **臺灣國際旅遊目的地**
-
-##### [點此](#dest-map)玩玩2010-2015臺灣出國旅遊目的地的互動式地圖
-
+##### [點此](#korean-wave)或上方**韓國**，看我們針對韓國的研究
 
 
 Dest. Map {data-navmenu="概觀" data-icon="glyphicon glyphicon-globe"}
@@ -229,7 +232,7 @@ World_2010
 ```
 
 
-SARS {data-navmenu="疾病" data-icon="ion-arrow-graph-down-right"}
+SARS {data-navmenu="疾病" data-icon="fa-stethoscope"}
 ===========================================
 
 Row {.tabset}
@@ -265,10 +268,52 @@ SARS對臺灣出國旅遊 {.sidebar}
 
 * SARS的疫情(綠)與出境人數(紅)有明顯負向關聯
 
-* 此關聯與季節性出境人數之週期無關(藍線，2003出境人數)
+* 此關聯與季節性出境人數之週期無關(紫線，2002出境人數)
 
 
-H1N1 {data-navmenu="疾病" data-icon="ion-medkit"}
+MERS {data-navmenu="疾病" data-icon="fa-user-md"}
+=================================
+
+row 1
+--------------------------
+
+###
+```{r echo=FALSE}
+pl_MERS_tour
+```
+
+row 2
+--------------------------
+
+###
+```{r}
+pl_MERS_case
+```
+
+sidebar {.sidebar}
+--------------------------
+
+<br>
+
+**MERS**
+
+* 主要流行於**中東地區**
+
+* 致死率比SARS高
+
+* 亞洲僅**韓國大規模**爆發
+
+<br>
+
+**韓國**
+
+* 2015/06 疫情最為嚴重
+
+* 台灣前往韓國旅遊人數下降
+
+* 日本：未傳出疫情
+
+H1N1 {data-navmenu="疾病" data-icon="fa-plus-square"}
 ===========================================
 
 row1 {.tabset}
@@ -287,19 +332,9 @@ pl_h1n1_kr_09_10
 row2 {.tabset}
 -------------------
 
-### Jp: 2007-2008
-```{r echo=FALSE}
-pl_h1n1_jp_07_08
-```
-
 ### Jp: 2011-2012
 ```{r echo=FALSE}
 pl_h1n1_jp_11_12
-```
-
-### Kor: 2007-2008
-```{r echo=FALSE}
-pl_h1n1_kr_07_08
 ```
 
 ### Kor: 2011-2012
@@ -307,12 +342,23 @@ pl_h1n1_kr_07_08
 pl_h1n1_kr_11_12
 ```
 
+### Jp: 2008
+```{r echo=FALSE}
+pl_h1n1_jp_07_08
+```
+
+### Kor: 2008
+```{r echo=FALSE}
+pl_h1n1_kr_07_08
+```
+
+
 H1N1 {.sidebar}
 -------------------------------------
 
 <br>
 
-#### Upper Row: **H1N1大流行**
+Upper Row: **H1N1大流行**
 
 * 日本、韓國: 2009-10 H1N1大流行
 
@@ -320,24 +366,30 @@ H1N1 {.sidebar}
 
 <br>
 
-#### Lower Row: **沒有H1N1影響**
+Lower Row: **沒有H1N1影響**
 
 * 旅遊人數波動與2009-10**類似**
 
 * H1N1疫情**無法解釋**旅遊人數的改變
 
 <br>
-<br>
-<br>
-<br>
 
+**推測原因**
+
+* H1N1最嚴重時(9月至隔年1月)與旅遊淡季重疊
+
+* H1N1致死率相對SARS或MERS低許多
+
+    * 未造成恐慌
+
+<div class="absolute">
 註：可拖拉調整時間軸尺度
+</div>
 
-
-Flight {data-navmenu="中國" data-icon="ion-plane"}
+Flight {data-navmenu="中國" data-icon="fa-plane"}
 ===========================================
 
-row 1 {.tabset data-height=650}
+row 1 {.tabset data-height=660}
 --------------------
 
 ### 2008-10東亞
@@ -357,13 +409,13 @@ ggplotly(pl_2008_10_ea)
 
 #### **假設：**
 
-1. 台商**不透過香港**直接進中國大陸
+> 1. 台商**不透過香港**直接進中國大陸
 
-2. **成本下降**，台商**更頻繁前往**中國大陸
+> 2. **成本下降**，台商**更頻繁前往**中國大陸
 
-3. 更**方便**，前往中國大陸**旅遊人數增加**
+> 3. 更**方便**，前往中國大陸**旅遊人數增加**
 
-4. 政策及社會氛圍，兩岸**往來更加頻繁**
+> 4. 政策及社會氛圍，兩岸**往來更加頻繁**
 
 </div>
 
@@ -376,13 +428,15 @@ ggplotly(pl_2008_10_ea)
 
 <img src="./china/Cross-strait_daily_charter_route_map.jpg" width="427" height="341">
 
-### 載客率 1
-<img src="./china/2009.08.31.png" width="493.5" height="406.5">
+### 載客率
 
-### 載客率 2
-<img src="./china/2009.09carrier.png" width="493.5" height="406.5">
+<img src="./china/2009_8_31.png" width="494" height="407">
 
-row 2 {data-height=350}
+### 載客率_2
+
+<img src="./china/2009_9carrier.png" width="500" height="469">
+
+row 2 {data-height=340}
 ------------------------
 
 ### 
@@ -426,16 +480,15 @@ row 1 {.tabset}
 ggplotly(pl_2008_17_ch)
 ```
 
-### 2012-2017 China vs. Japan
+### 1997-2016 China vs. Japan
 ```{r echo=FALSE}
-ggplotly(pl_2012_17_2)
+ggplotly(pl_year_jp_ch)
 ```
 
 ### 2012-2017 排名
 ```{r echo=FALSE}
 ggplotly(pl_2012_17_all)
 ```
-
 
 Korean Wave {data-navmenu="韓國" data-icon="fa-television" data-orientation=columns}
 ===========================================
@@ -469,13 +522,15 @@ pl_jp_gender_tour
 sidebar {.sidebar data-width=240}
 ---------------------------
 
+<br>
+
 **日本**
 
 年齡、性別：**各族群趨勢一致**(線條平行)
 
 推論：
     
-* 對日本之偏好**無特定族群差異**
+* 對日本偏好**無特定族群差異**
 
 <br>
 
@@ -490,14 +545,11 @@ sidebar {.sidebar data-width=240}
 * 韓劇**火花**、**藍色生死戀**開播
     
 * 自此之後，女性旅客皆比男性多，且**差距不斷地升高**
-    
 
 <div class="absolute">
-
-<span class="left">[prev.](#dest-map)</span><span class="right">[nxt.](#page_2)</span>
+註:可拖拉橫移時間軸，比較2001年附近日韓的差別
 </div>
     
-
 
 Cost {data-navmenu="韓國" data-icon="fa-usd" data-orientation=columns}
 ===========================================
@@ -530,7 +582,7 @@ pl_curr
 
 
 
-其他因素 {data-orientation=rows}
+簽證 {data-orientation=rows}
 ===========================================
 
 row1 {data-height=680}

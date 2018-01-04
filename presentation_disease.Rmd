@@ -19,9 +19,10 @@ source("./unemployment.disease/plot_unemployment.R",encoding="utf-8")
 source("./currency/plot_curr.R",encoding="utf-8")
 source("./unemployment.disease/plot_SARS.R",encoding="utf-8")
 source("./unemployment.disease/plot_h1n1.R",encoding="utf-8")
+source("./unemployment.disease/plot_2015KoreaMERS.R",encoding="utf-8")
 ```
 
-SARS {data-navmenu="疾病" data-icon="ion-arrow-graph-down-right"}
+SARS {data-navmenu="疾病" data-icon="fa-stethoscope"}
 ===========================================
 
 Row {.tabset}
@@ -57,10 +58,50 @@ SARS對臺灣出國旅遊 {.sidebar}
 
 * SARS的疫情(綠)與出境人數(紅)有明顯負向關聯
 
-* 此關聯與季節性出境人數之週期無關(藍線，2003出境人數)
+* 此關聯與季節性出境人數之週期無關(紫線，2002出境人數)
 
 
-H1N1 {data-navmenu="疾病" data-icon="ion-medkit"}
+MERS {data-navmenu="疾病" data-icon="fa-user-md"}
+=================================
+
+row 1
+--------------------------
+
+###
+```{r echo=FALSE}
+pl_MERS_tour
+```
+
+row 2
+--------------------------
+
+###
+```{r}
+pl_MERS_case
+```
+
+sidebar {.sidebar}
+--------------------------
+
+**MERS**
+
+* 主要流行於**中東地區**
+
+* 致死率比SARS高
+
+* 亞洲僅**韓國大規模**爆發
+
+<br>
+
+**韓國**
+
+* 2015/06 疫情最為嚴重
+
+* 台灣前往韓國旅遊人數下降
+
+* 日本：未傳出疫情
+
+H1N1 {data-navmenu="疾病" data-icon="fa-plus-square"}
 ===========================================
 
 row1 {.tabset}
@@ -79,19 +120,9 @@ pl_h1n1_kr_09_10
 row2 {.tabset}
 -------------------
 
-### Jp: 2007-2008
-```{r echo=FALSE}
-pl_h1n1_jp_07_08
-```
-
 ### Jp: 2011-2012
 ```{r echo=FALSE}
 pl_h1n1_jp_11_12
-```
-
-### Kor: 2007-2008
-```{r echo=FALSE}
-pl_h1n1_kr_07_08
 ```
 
 ### Kor: 2011-2012
@@ -99,12 +130,23 @@ pl_h1n1_kr_07_08
 pl_h1n1_kr_11_12
 ```
 
+### Jp: 2008
+```{r echo=FALSE}
+pl_h1n1_jp_07_08
+```
+
+### Kor: 2008
+```{r echo=FALSE}
+pl_h1n1_kr_07_08
+```
+
+
 H1N1 {.sidebar}
 -------------------------------------
 
 <br>
 
-#### Upper Row: **H1N1大流行**
+Upper Row: **H1N1大流行**
 
 * 日本、韓國: 2009-10 H1N1大流行
 
@@ -112,15 +154,23 @@ H1N1 {.sidebar}
 
 <br>
 
-#### Lower Row: **沒有H1N1影響**
+Lower Row: **沒有H1N1影響**
 
 * 旅遊人數波動與2009-10**類似**
 
 * H1N1疫情**無法解釋**旅遊人數的改變
 
 <br>
-<br>
-<br>
-<br>
 
+**推測原因**
+
+* H1N1最嚴重時(9月至隔年1月)與旅遊淡季重疊
+
+* H1N1致死率相對SARS或MERS低許多
+
+    * 未造成恐慌
+
+<div class="absolute">
 註：可拖拉調整時間軸尺度
+</div>
+

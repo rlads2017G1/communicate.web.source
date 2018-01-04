@@ -14,21 +14,24 @@ library(flexdashboard)
 source("./currency/plot_visa.R",encoding="utf-8")
 ```
 
-Visa {data-navmenu="其他因素" data-icon="ion-android-checkbox"} 
-==============================
+簽證 {data-orientation=rows}
+===========================================
 
-row 1 {data-height=700}
----------------------------
+row1 {data-height=680}
+---------------------
 
-### 2000-2015 免簽國家旅遊人數
+###
 ```{r echo=FALSE}
 ggplotly(pl_visa_country)
 ```
 
-row 2 {data-height=300}
----------------------------
+row2 {data-height=320}
+--------------------
 
-### 免簽國家
+###
 ```{r echo=FALSE}
 timevis(visa)
 ```
+
+
+

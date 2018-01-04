@@ -17,10 +17,10 @@ source("./china/plot_table.R",encoding="utf-8")
 source("./china/plot_yearly.R",encoding="utf-8")
 ```
 
-Flight {data-navmenu="中國" data-icon="ion-plane"}
+Flight {data-navmenu="中國" data-icon="fa-plane"}
 ===========================================
 
-row 1 {.tabset data-height=650}
+row 1 {.tabset data-height=665}
 --------------------
 
 ### 2008-10東亞
@@ -40,13 +40,13 @@ ggplotly(pl_2008_10_ea)
 
 #### **假設：**
 
-1. 台商**不透過香港**直接進中國大陸
+> 1. 台商**不透過香港**直接進中國大陸
 
-2. **成本下降**，台商**更頻繁前往**中國大陸
+> 2. **成本下降**，台商**更頻繁前往**中國大陸
 
-3. 更**方便**，前往中國大陸**旅遊人數增加**
+> 3. 更**方便**，前往中國大陸**旅遊人數增加**
 
-4. 政策及社會氛圍，兩岸**往來更加頻繁**
+> 4. 政策及社會氛圍，兩岸**往來更加頻繁**
 
 </div>
 
@@ -59,13 +59,15 @@ ggplotly(pl_2008_10_ea)
 
 <img src="./china/Cross-strait_daily_charter_route_map.jpg" width="427" height="341">
 
-### 載客率 1
-<img src="./china/2009.08.31.png" width="493.5" height="406.5">
+### 載客率
 
-### 載客率 2
-<img src="./china/2009.09carrier.png" width="493.5" height="406.5">
+<img src="./china/2009_8_31.png" width="494" height="407">
 
-row 2 {data-height=350}
+### 載客率_2
+
+<img src="./china/2009_9carrier.png" width="500" height="469">
+
+row 2 {data-height=335}
 ------------------------
 
 ### 
@@ -109,9 +111,9 @@ row 1 {.tabset}
 ggplotly(pl_2008_17_ch)
 ```
 
-### 2012-2017 China vs. Japan
+### 1997-2016 China vs. Japan
 ```{r echo=FALSE}
-ggplotly(pl_2012_17_2)
+ggplotly(pl_year_jp_ch)
 ```
 
 ### 2012-2017 排名
