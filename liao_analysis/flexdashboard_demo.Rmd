@@ -1,0 +1,283 @@
+---
+title: "Dashboard: demo 1"
+author: Group_1
+output:
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    social: [ "twitter", "facebook", "menu" ]
+    navbar:
+    - { title: "flexdashboard", align: left }
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dygraphs)
+library(flexdashboard)
+library(dplyr)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(plotly)
+library(dygraphs)
+options(scipen=999)  # disable scientific notation
+lo<- function(x) {str_replace_all(x,"合計","地區")}
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+tour <- read_csv("tour.csv", col_names = FALSE) %>%
+    rename("Year"=X1,"Location"=X2,"Count"=X3) %>%
+    mutate(year=as.Date(paste(Year+1911,"-01-01", sep=""))) %>%
+    mutate(Location=lo(Location))
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+unemployment <- read_csv("./data/unemployment.csv",col_names = FALSE) %>%
+    rename("Year"=X1,"month"=X2,"rate"=X3) %>%
+    mutate("Year"=1911+Year)
+unemployment <- unemployment %>%
+    mutate("date"=as.Date(paste(unemployment$Year,'-',unemployment$month,'-01',sep="")))
+
+lo<- function(x) {str_replace_all(x,"合計","地區")}
+
+tour <- read_csv("tour.csv", col_names = FALSE) %>%
+    rename("Year"=X1,"Location"=X2,"Count"=X3) %>%
+    mutate(year=as.Date(paste(Year+1911,"-01-01", sep=""))) %>%
+    mutate(Location=lo(Location)) #將"合計"統一為"地區"
+
+    ## 旅遊總人數
+non_region <- tour %>%
+    filter(!grepl("地區",Location)) 
+
+other_region <- tour %>%
+    filter(Location=="其他地區")
+
+tour_total_year <- bind_rows(non_region, other_region) %>%
+    filter(Year>=90) %>%
+    group_by(year) %>%
+    summarise(Count=sum(Count,na.rm = TRUE))
+
+    ## unemployment rate Year average
+unem_year <- unemployment %>%
+    filter(Year<=2015) %>%
+    group_by(Year) %>%
+    summarise(rate=mean(rate))
+unem_year <- unem_year %>%
+    mutate("date"=as.Date(paste(unem_year$Year,'-','01-01',sep="")))
+```
+
+
+概觀 {data-orientation=rows data-navmenu="臺灣"}
+===================================== 
+    
+Sidebar {.sidebar}
+-----------------
+
+可以加 side bar:   
+
+**一些小發現**
+
+* **合計**是用在**69-96**年間分類
+* **地區**是用在**97**年之後的分類
+* **76**年解嚴，出國人數上升
+* 香港、澳門、中國分開算
+    - **香港很重要**
+* **SARS與旅遊人數**
+* **H1N1對旅遊無明顯影響效果**
+* **MERS** 與旅韓人數吻合
+* 2009: 怪異現象(數據?)
+* 失業率與旅遊人數吻合
+
+row 1 
+---------------------
+
+### 亞洲: H1N1
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+tour_unem <- left_join(tour_total_year,unem_year, by=c("year"="date")) %>%
+    mutate("Count"=Count/1000000) %>% # rescale to become more readable
+    select(Year,Count,rate)
+
+# tour_unem <- xts(tour_unem, order.by=tour_unem$Year)
+dygraph(tour_unem) %>%
+    dyAxis("y", label = "旅遊人數(百萬)") %>%
+    dyAxis("y2", label = "失業率(%)", independentTicks = TRUE) %>%
+    dySeries("rate", axis = 'y2', label = "失業率(%)") %>%
+    dySeries("Count", axis = 'y', label = "旅遊人數(百萬)") %>%
+    dyRangeSelector(height = 20, strokeColor = "") %>%
+    dyHighlight(highlightSeriesOpts = list(strokeWidth = 3))
+
+```
+
+> 上圖: H1N1按月案例數；下圖: 台灣出國旅遊人數
+> 與SARS不同，**H1N1對於旅遊似乎沒有影響**
+
+故事模板 {.storyboard data-icon="fa-plane" data-navmenu="臺灣"}
+============================
+
+### 失業率: 臺灣2001至2015**年平均失業率** 圖片可調時間軸
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+tour_unem <- left_join(tour_total_year,unem_year, by=c("year"="date")) %>%
+    mutate("Count"=Count/1000000) %>% # rescale to become more readable
+    select(Year,Count,rate)
+
+# tour_unem <- xts(tour_unem, order.by=tour_unem$Year)
+dygraph(tour_unem) %>%
+    dyAxis("y", label = "旅遊人數(百萬)") %>%
+    dyAxis("y2", label = "失業率(%)", independentTicks = TRUE) %>%
+    dySeries("rate", axis = 'y2', label = "失業率(%)") %>%
+    dySeries("Count", axis = 'y', label = "旅遊人數(百萬)") %>%
+    dyRangeSelector(height = 20, strokeColor = "") %>%
+    dyHighlight(highlightSeriesOpts = list(strokeWidth = 3))
+
+```
+
+### 2009年 怪異現象: 總旅遊人數下降，亞洲旅遊人數上升
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+non_region <- tour %>%
+    filter(!grepl("地區",Location)) 
+
+other_region <- tour %>%
+    filter(Location=="其他地區")
+
+tour_total <- bind_rows(non_region, other_region) %>%
+    group_by(year) %>%
+    summarise(Count=sum(Count,na.rm = TRUE))
+
+tour_total_2 <- bind_rows(non_region, other_region) %>%
+    filter(!grepl("中國|香港|日本|澳門|韓國|泰國|新加坡|越南|印尼|馬來西亞",Location)) %>%
+    group_by(year) %>%
+    summarise(Count=sum(Count,na.rm = TRUE))
+
+tour_Asia_2 <- bind_rows(non_region, other_region) %>%
+    filter(grepl("中國|香港|日本|澳門|韓國|泰國|新加坡|越南|印尼|馬來西亞",Location)) %>%
+    group_by(year) %>%
+    summarise(Count=sum(Count,na.rm = TRUE))
+
+tour_country <- function(country) {
+    tour_country <- tour %>%
+        filter(grepl(country, Location))
+    }
+## Plotting Function
+
+tour_others <- tour %>%filter(Location=="其他地區")
+tour_amer <- tour_country("美洲地區") %>%
+    filter(!grepl("中|北|南",Location))
+
+gp=ggplot()+
+    geom_line(data=tour_total, mapping=aes(x=year,y=Count,color="總人數"))+
+    # geom_line(data=tour_country("美國"), mapping=aes(x=year,y=Count,color="美國"))+
+    # geom_line(data=tour_country("香港"), mapping=aes(x=year,y=Count,color="香港"))+
+    # geom_line(data=tour_country("日本"), mapping=aes(x=year,y=Count,color="日本"))+
+    # geom_line(data=tour_country("澳門"), mapping=aes(x=year,y=Count,color="澳門"))+
+    # geom_line(data=tour_country("韓國"), mapping=aes(x=year,y=Count,color="南韓"))+
+    # geom_line(data=tour_country("泰國"), mapping=aes(x=year,y=Count,color="泰國"))+
+    geom_line(data=tour_country("亞洲地區"), mapping=aes(x=year,y=Count,color="亞洲地區"))+
+    geom_line(data=tour_others , mapping=aes(x=year,y=Count,color="其他地區"))+
+    geom_line(data=tour_country("歐洲地區"), mapping=aes(x=year,y=Count,color="歐洲地區"))+
+    geom_line(data=tour_amer, mapping=aes(x=year,y=Count,color="美洲地區"))+
+    scale_x_date(labels = function(x) format(x, "%Y"), date_breaks="1 year", limits=c(as.Date("2004-01-01"),as.Date("2015-01-01") )) +
+    scale_y_continuous(breaks=seq(0, 12000000, by=1000000))
+ggplotly(gp)
+```
+
+***
+
+- 2009年**總旅遊人數下降**，但**亞洲地區上升**
+- 這和觀光局的其中一個地區有關: **其他地區**
+- **其他地區**不被歸類於歐、亞、非、美洲
+
+- 歐洲旅遊人數並未減少
+- 美洲旅遊人數減少的數量不足以解釋總人數的下降
+
+**總旅遊人數下降**幾乎**只與**其他地區人數下降有關:
+
+- 其他地區從 $592,862$ (2008/97)下降至 $143,312$ (2009/98)
+- 總人數從 $8,963,712$ (2008/97)下降至 $8,469,132$ (2009/98)
+
+
+### 南韓: MERS
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+source('./analysis_code/mers_tour.R')
+```
+
+    
+國際航線 {data-navmenu="世界"}
+=========================================
+    
+row 1 {data-height=700}
+------------------------------------
+
+### 香港出發之航線
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(maps)
+library(geosphere)
+library(dplyr)
+library(stringr)
+library(stringi)
+rp <- function(x, origin, replace) {stri_replace_all_fixed(x,origin,replace)}
+
+airports <- read_csv("./data/global_airline_network/airports_with_continent.csv")
+
+routes <- read_csv("./data/global_airline_network/routes.csv") %>%
+    mutate("Source airport ID"=rp(`Source airport ID`,"\\N",NA)) %>%
+    arrange(desc(`Source airport ID`)) %>%
+    filter(is.na(`Source airport ID`)==F)
+
+## filter specific airports
+Inter_airport <- airports %>%
+    arrange(desc(`Airport ID`)) %>%
+    filter(is.na(`Airport ID`)==F) %>%
+    filter(str_detect(Name, "International Airport|international airport"))
+
+Dest_HK <- routes[routes$`Destination airport ID`=="3077",]
+
+## Originate: HK airport
+xlim <- c(-30, 150)
+ylim <- c(-60, 85)
+map("world", col="black", fill=T, border="white", bg="#FFFFFF00", lwd=0.01, mar = c(0.5,.5,.5,.5), ylim=ylim)
+for (i in 1:nrow(Dest_HK)) {
+    if (Dest_HK[i,]$`Source airport ID` %in% Inter_airport$`Airport ID` & Dest_HK[i,]$`Destination airport ID` %in% airports$`Airport ID`) {
+        source_air <- Inter_airport[Inter_airport$`Airport ID`==Dest_HK[i,]$`Source airport ID`,]
+        dest_air <- airports[airports$`Airport ID`==Dest_HK[i,]$`Destination airport ID`,]
+        
+        inter <- gcIntermediate(c(source_air[1,]$Longitude, source_air[1,]$Latitude), c(dest_air[1,]$Longitude, dest_air[1,]$Latitude), n=100, addStartEnd=TRUE)
+        lines(inter, col="green", lwd=0.001)
+    }
+}
+```
+
+row 2
+---------------------------------------
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+temperature <- ts(frequency = 12, start = c(1980, 1),
+                  data = c(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 
+                           25.2, 26.5, 23.3, 18.3, 13.9, 9.6))
+rainfall <- ts(frequency = 12, start = c(1980, 1),
+               data = c(49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 
+                        135.6, 148.5, 216.4, 194.1, 95.6, 54.4))
+weather <- cbind(rainfall, temperature)
+```
+
+### Chart 1  
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+dygraph(weather) %>%
+    dyAxis("y", label = "Temperature (C)") %>%
+    dyAxis("y2", label = "Rainfall", independentTicks = TRUE) %>%
+    dySeries("rainfall", axis = 'y2') %>%
+    dyRangeSelector(height = 20, strokeColor = "")
+```
+
+
+### Chart 2
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+dygraph(weather) %>%
+    dyAxis("y", label = "Temperature (C)") %>%
+    dyAxis("y2", label = "Rainfall", independentTicks = TRUE) %>%
+    dySeries("rainfall", axis = 'y2') %>%
+    dyRangeSelector(height = 20, strokeColor = "")
+```
+

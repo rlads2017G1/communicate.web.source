@@ -1,0 +1,326 @@
+---
+title: "Overview"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(plotly)
+options(scipen=999)  # disable scientific notation
+lo<- function(x) {str_replace_all(x,"合計","地區")}
+```
+
+## 一些小發現
+* **合計**是用在**69-96**年間分類
+* **地區**是用在**97**年之後的分類
+* **76**年解嚴，出國人數上升
+* 香港、澳門、中國分開算
+    - **香港很重要**
+* **SARS與旅遊人數**
+* **H1N1對旅遊無明顯影響效果**
+* **MERS** 與旅韓人數吻合
+* 2009: 怪異現象(數據?)
+* 失業率與旅遊人數吻合
+
+```{r, message=FALSE, warning=FALSE}
+tour <- read_csv("tour.csv", col_names = FALSE) %>%
+    rename("Year"=X1,"Location"=X2,"Count"=X3) %>%
+    mutate(year=as.Date(paste(Year+1911,"-01-01", sep=""))) %>%
+    mutate(Location=lo(Location))
+```
+
+## 臺灣出國旅遊人數
+
+### 失業率
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+unemployment <- read_csv("./data/unemployment.csv",col_names = FALSE) %>%
+    rename("Year"=X1,"month"=X2,"rate"=X3) %>%
+    mutate("Year"=1911+Year)
+unemployment <- unemployment %>%
+    mutate("date"=as.Date(paste(unemployment$Year,'-',unemployment$month,'-01',sep="")))
+
+lo<- function(x) {str_replace_all(x,"合計","地區")}
+
+tour <- read_csv("tour.csv", col_names = FALSE) %>%
+    rename("Year"=X1,"Location"=X2,"Count"=X3) %>%
+    mutate(year=as.Date(paste(Year+1911,"-01-01", sep=""))) %>%
+    mutate(Location=lo(Location)) #將"合計"統一為"地區"
+
+    ## 旅遊總人數
+non_region <- tour %>%
+    filter(!grepl("地區",Location)) 
+
+other_region <- tour %>%
+    filter(Location=="其他地區")
+
+tour_total_year <- bind_rows(non_region, other_region) %>%
+    filter(Year>=90) %>%
+    group_by(year) %>%
+    summarise(Count=sum(Count,na.rm = TRUE))
+
+    ## unemployment rate Year average
+unem_year <- unemployment %>%
+    filter(Year<=2015) %>%
+    group_by(Year) %>%
+    summarise(rate=mean(rate))
+unem_year <- unem_year %>%
+    mutate("date"=as.Date(paste(unem_year$Year,'-','01-01',sep="")))
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+ggplot()+
+    geom_line(data=tour_total_year, mapping=aes(x=year,y=Count/1000000,color="總人數(百萬人)"))+
+    geom_point(data=tour_total_year, mapping=aes(x=year,y=Count/1000000,color="總人數(百萬人)"))+
+    geom_line(data=unem_year, mapping=aes(x=date,y=2*(rate-3),color="失業率(%)"))+
+    geom_point(data=unem_year, mapping=aes(x=date,y=2*(rate-3),color="失業率(%)"))+
+    scale_x_date(labels = function(x) format(x, "%Y"), date_breaks="1 year") +
+    scale_y_continuous(breaks=seq(0, 14, by=1),sec.axis = sec_axis(~.*0.5+3, name = "失業率(%)"))+
+    labs(x = "", y="總人數(百萬人)", colour = "")
+```
+
+上圖為90(2001)至104(2015)年，台年**年平均失業率**與**出國旅遊總人數**之關聯
+
+
+### 2009: 怪異現象(數據?)
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+non_region <- tour %>%
+    filter(!grepl("地區",Location)) 
+
+other_region <- tour %>%
+    filter(Location=="其他地區")
+
+tour_total <- bind_rows(non_region, other_region) %>%
+    group_by(year) %>%
+    summarise(Count=sum(Count,na.rm = TRUE))
+
+tour_total_2 <- bind_rows(non_region, other_region) %>%
+    filter(!grepl("中國|香港|日本|澳門|韓國|泰國|新加坡|越南|印尼|馬來西亞",Location)) %>%
+    group_by(year) %>%
+    summarise(Count=sum(Count,na.rm = TRUE))
+
+tour_Asia_2 <- bind_rows(non_region, other_region) %>%
+    filter(grepl("中國|香港|日本|澳門|韓國|泰國|新加坡|越南|印尼|馬來西亞",Location)) %>%
+    group_by(year) %>%
+    summarise(Count=sum(Count,na.rm = TRUE))
+
+tour_country <- function(country) {
+    tour_country <- tour %>%
+        filter(grepl(country, Location))
+    }
+## Plotting Function
+
+tour_others <- tour %>%filter(Location=="其他地區")
+tour_amer <- tour_country("美洲地區") %>%
+    filter(!grepl("中|北|南",Location))
+
+gp=ggplot()+
+    geom_line(data=tour_total, mapping=aes(x=year,y=Count,color="總人數"))+
+    # geom_line(data=tour_country("美國"), mapping=aes(x=year,y=Count,color="美國"))+
+    # geom_line(data=tour_country("香港"), mapping=aes(x=year,y=Count,color="香港"))+
+    # geom_line(data=tour_country("日本"), mapping=aes(x=year,y=Count,color="日本"))+
+    # geom_line(data=tour_country("澳門"), mapping=aes(x=year,y=Count,color="澳門"))+
+    # geom_line(data=tour_country("韓國"), mapping=aes(x=year,y=Count,color="南韓"))+
+    # geom_line(data=tour_country("泰國"), mapping=aes(x=year,y=Count,color="泰國"))+
+    geom_line(data=tour_country("亞洲地區"), mapping=aes(x=year,y=Count,color="亞洲地區"))+
+    geom_line(data=tour_others , mapping=aes(x=year,y=Count,color="其他地區"))+
+    geom_line(data=tour_country("歐洲地區"), mapping=aes(x=year,y=Count,color="歐洲地區"))+
+    geom_line(data=tour_amer, mapping=aes(x=year,y=Count,color="美洲地區"))+
+    scale_x_date(labels = function(x) format(x, "%Y"), date_breaks="1 year", limits=c(as.Date("2004-01-01"),as.Date("2015-01-01") )) +
+    scale_y_continuous(breaks=seq(0, 12000000, by=1000000))
+ggplotly(gp)
+```
+
+> 註: 可將上圖右邊特定的**圖例**(如總人數)按掉，再按右上角的**Autoscale**，就能放大顯示剩下的圖例
+
+- 2009年**總旅遊人數下降**，但**亞洲地區上升**
+- 這和觀光局的其中一個地區有關: **其他地區**
+- **其他地區**不被歸類於歐、亞、非、美洲
+
+我本來以為2009年總旅遊人數與**經濟衰退**有關
+
+若亞洲地區旅遊人數微幅上升，而歐洲、美洲地區旅遊人數下降
+
+那就可以順理成章地猜測: 大家變窮了，所以**去較遠(貴)國家的人數減少**
+
+但現在數據上顯示，
+- 歐洲旅遊人數並未減少
+- 美洲旅遊人數減少的數量不足以解釋總人數的下降
+
+事實上，**總旅遊人數下降**幾乎**只與**其他地區人數下降有關:
+
+- 其他地區從 $592,862$ (2008/97)下降至 $143,312$ (2009/98)
+- 總人數從 $8,963,712$ (2008/97)下降至 $8,469,132$ (2009/98)
+
+兩條線的趨勢幾乎是同步的
+
+當然上述解釋還是說得通，並無太大衝突
+
+### 將*合計*、*地區*統一為**地區**
+```{r, message=FALSE, warning=FALSE}
+lo<- function(x) {str_replace_all(x,"合計","地區")}
+tour <- tour %>%
+    mutate(Location=lo(Location))
+```
+
+### 各大洲比較
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+## 各大洲旅遊人數
+tour_continent <- tour %>%
+    filter(grepl("地區",Location)) %>%
+    filter(!grepl("其他地區",Location))
+
+## 各大洲旅遊人數比較
+ggplot(tour_continent,mapping = aes(x=Year, y=Count))+
+    geom_point(mapping = aes(color=Location))+
+    scale_x_continuous(breaks=69:104)
+```
+
+### 各大洲+總人數
+```{r, message=FALSE, warning=FALSE}
+## 旅遊總人數
+non_region <- tour %>%
+    filter(!grepl("地區",Location)) 
+
+other_region <- tour %>%
+    filter(grepl("其他地區",Location))
+
+tour_total <- bind_rows(non_region, other_region) %>%
+    group_by(Year) %>%
+    summarise(Total=sum(Count,na.rm = TRUE))
+
+## 各大洲+總人數
+ggplot()+
+    geom_line(data=tour_continent,mapping = aes(x=Year,y=Count,color=Location))+
+    geom_line(data=tour_total, mapping=aes(x=Year,y=Total,color="總人數"))+
+    scale_x_continuous(limits=c(75,104),breaks=75:104)
+```
+
+
+### 亞洲: SARS
+**92年**觀光人數下降，亞洲尤其明顯，所以先看看亞洲
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+tour_asia_country <- tour %>%
+    filter(grepl("中國|日本|韓國|香港|亞洲地區|菲律賓|新加坡|馬來西亞|泰國|印尼|汶萊|越南|澳門|緬甸",Location))
+
+gp=ggplot(tour_asia_country,mapping = aes(x=Year, y=Count))+
+    geom_line(mapping = aes(color=Location))+
+    scale_x_continuous(limits=c(75,104) ,breaks=75:104)+
+    scale_y_continuous(breaks=seq(0, 12000000, by=1000000))
+ggplotly(gp)
+```
+此圖為互動式，可多試試右上角的功能鍵
+
+#### 概觀
+- **香港**在**97年之前**的變動趨勢與**亞洲地區**吻合
+- **中國**、**日本**、**香港**在**98年之後**的變動很有趣
+- **92年附近**，澳門和香港的曲線變動非常類似，**92年的下跌**非常明顯
+
+推測這下跌應與**某大事件**的發生有關。查詢維基百科[2003年臺灣](https://zh.wikipedia.org/wiki/2003%E5%B9%B4%E8%87%BA%E7%81%A3)，發現其很有可能與**SARS**於亞洲地區，特別是臺灣與中國大陸的爆發有關。
+
+#### SARS 疫情
+- 民國92年旅遊人數明顯下降，可說是暴跌的程度。其原因應與SARS在中國大陸、香港、澳門及臺灣的爆發有關。
+
+- 有趣的是，亞洲國家當中，唯一**旅遊人數大幅上升**的國家**韓國**，未傳出SARS疫情(沒有病例)
+    - 可參見[WHO SARS Summary](http://www.who.int/csr/sars/country/2003_04_1/en/)，查看各國SARS的疫情。
+
+- 觀光局**觀光統計月報**: [2003年4月中華民國國民出國目的地人數分析統計](http://admin.taiwan.net.tw/statistics/month.aspx?no=135)可看到**四月份**觀光成長率多為負，尤其是**香港**
+    - 三、四月: SARS在香港爆發
+
+綜上所述，應能確定造成**92年旅遊人數下降**的因素為**SARS疫情爆發**。
+
+### 亞洲: H1N1
+
+```{r, message=FALSE, warning=FALSE}
+source('./analysis_code/monthly_h1n1_tour.R')
+```
+
+- 上圖: H1N1按月案例數；下圖: 台灣出國旅遊人數
+- 與SARS不同，**H1N1對於旅遊似乎沒有影響**
+    -嚴重疫區: 中國、韓國、日本
+
+### 南韓: MERS
+```{r, message=FALSE, warning=FALSE}
+source('./analysis_code/mers_tour.R')
+```
+
+由上圖可明顯看出MERS在南韓的疫情與旅韓遊客數之關聯
+
+<br>
+
+## 國際旅遊
+
+### 世界航線網絡
+
+下圖依據2012年世界航線的資料繪製
+
+**目的地為香港**之國際航線
+```{r, message=FALSE, warning=FALSE}
+library(readr)
+library(maps)
+library(geosphere)
+library(dplyr)
+library(stringr)
+library(stringi)
+rp <- function(x, origin, replace) {stri_replace_all_fixed(x,origin,replace)}
+
+airports <- read_csv("./data/global_airline_network/airports_with_continent.csv")
+
+routes <- read_csv("./data/global_airline_network/routes.csv") %>%
+    mutate("Source airport ID"=rp(`Source airport ID`,"\\N",NA)) %>%
+    arrange(desc(`Source airport ID`)) %>%
+    filter(is.na(`Source airport ID`)==F)
+
+## filter specific airports
+Inter_airport <- airports %>%
+    arrange(desc(`Airport ID`)) %>%
+    filter(is.na(`Airport ID`)==F) %>%
+    filter(str_detect(Name, "International Airport|international airport"))
+
+Dest_HK <- routes[routes$`Destination airport ID`=="3077",]
+
+## Originate: HK airport
+xlim <- c(-30, 150)
+ylim <- c(-60, 85)
+map("world", col="black", fill=T, border="white", bg="#FFFFFF00", lwd=0.01, mar = c(0.5,.5,.5,.5), ylim=ylim)
+for (i in 1:nrow(Dest_HK)) {
+    if (Dest_HK[i,]$`Source airport ID` %in% Inter_airport$`Airport ID` & Dest_HK[i,]$`Destination airport ID` %in% airports$`Airport ID`) {
+        source_air <- Inter_airport[Inter_airport$`Airport ID`==Dest_HK[i,]$`Source airport ID`,]
+        dest_air <- airports[airports$`Airport ID`==Dest_HK[i,]$`Destination airport ID`,]
+        
+        inter <- gcIntermediate(c(source_air[1,]$Longitude, source_air[1,]$Latitude), c(dest_air[1,]$Longitude, dest_air[1,]$Latitude), n=100, addStartEnd=TRUE)
+        lines(inter, col="green", lwd=0.001)
+    }
+}
+```
+
+[**高畫質版**](https://drive.google.com/file/d/1r7XuNjrwaY9Einz_W2ZWem_Az_v6RF3nxA/view?usp=sharing)
+
+<br>
+
+#### 與 Master Card 資料結合?
+
+依據以上方式，應可將目的地為*Master card*上之城市的航線繪製出來，看看有什麼發現。
+
+#### **限制**: 
+
+- 此資料僅有航線，並無**總載客量**
+
+- 此資料僅2012年
+
+<br>
+
+## R Script
+[所有程式碼](https://github.com/liao961120/liao961120.github.io/tree/master/ds_tour/analysis_code)
+
+
