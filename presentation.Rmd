@@ -35,80 +35,6 @@ source("./currency/plot_visa.R",encoding="utf-8")
 source("./korea/plot_kor.R",encoding="utf-8")
 ```
 
-Ranking {data-navmenu="概觀" data-commentary-width=23 data-icon="glyphicon glyphicon-signal"}
-=========================================
-
-row1 {.tabset}
---------------------
-
-### 旅遊目的地排名變化
-```{r echo=FALSE}
-ggplotly(pl_year_country)
-```
-
-### 排名表
-```{r echo=FALSE}
-table()
-```
-
-### 2008 東亞
-```{r echo=FALSE}
-ggplotly(pl_2008_ea)
-```
-
-### 2009 東亞
-```{r echo=FALSE}
-ggplotly(pl_2009_ea)
-```
-
-### 2010 東亞
-```{r echo=FALSE}
-ggplotly(pl_2010_ea)
-```
-
-### 2008-10 東亞
-```{r echo=FALSE}
-ggplotly(pl_2008_10_ea)
-```
-
-### 2012-17 前十
-```{r echo=FALSE}
-ggplotly(pl_2012_17_all)
-```
-
-
-Ranking {.sidebar}
--------------------------------------
-
-<br>
-
-#### 排名前十
-
-* 東亞 (中港澳日韓)
-
-* 東南亞 (泰越新馬印尼)
-
-* 美國
-
-<br>
-
-#### 觀察
-
-    
-* 近年 vs. 20年前：**異軍突起**
-    
-* 中國大陸：2008之後暴增
-    
-* 韓國：2003之後
-
-
-<br><br><br>
-
-<div class="absolute">
-註：可將位於圖右側之legend上的國家按掉，再到圖上側按Autoscale，y軸就會調整到最適宜尺度。
-</div>
-
-
 Explore {.storyboard data-navmenu="概觀" data-commentary-width=23 data-icon="ion-ios-search-strong"}
 =========================================
 
@@ -183,6 +109,82 @@ pl_kor_gender_tour
 <br>
 
 ##### [點此](#korean-wave)或上方**韓國**，看我們針對韓國的研究
+
+
+
+
+Ranking {data-navmenu="概觀" data-commentary-width=23 data-icon="glyphicon glyphicon-signal"}
+=========================================
+
+row1 {.tabset}
+--------------------
+
+### 旅遊目的地排名變化
+```{r echo=FALSE}
+ggplotly(pl_year_country)
+```
+
+### 排名表
+```{r echo=FALSE}
+table()
+```
+
+### 2008 東亞
+```{r echo=FALSE}
+ggplotly(pl_2008_ea)
+```
+
+### 2009 東亞
+```{r echo=FALSE}
+ggplotly(pl_2009_ea)
+```
+
+### 2010 東亞
+```{r echo=FALSE}
+ggplotly(pl_2010_ea)
+```
+
+### 2008-10 東亞
+```{r echo=FALSE}
+ggplotly(pl_2008_10_ea)
+```
+
+### 2012-17 前十
+```{r echo=FALSE}
+ggplotly(pl_2012_17_all)
+```
+
+
+Ranking {.sidebar}
+-------------------------------------
+
+<br>
+
+#### 排名前十
+
+* 東亞 (中港澳日韓)
+
+* 東南亞 (泰越新馬印尼)
+
+* 美國
+
+<br>
+
+#### 觀察
+
+    
+* 近年 vs. 20年前：**異軍突起**
+    
+* 中國大陸：2008之後暴增
+    
+* 韓國：2003之後
+
+
+<br><br><br>
+
+<div class="absolute">
+註：可將位於圖右側之legend上的國家按掉，再到圖上側按Autoscale，y軸就會調整到最適宜尺度。
+</div>
 
 
 Dest. Map {data-navmenu="概觀" data-icon="glyphicon glyphicon-globe"}
