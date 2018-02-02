@@ -8,7 +8,7 @@ library(xts)
 library(scales)
 
 curr <- read_csv("./currency/NTD_against_JP_KR.csv") %>%
-    separate(MONTH, into = c('year', 'month'), sep =-3) %>%
+    separate(MONTH, into = c('year', 'month'), sep =-2) %>%
     mutate(year=1911+as.numeric(year))
 curr$date <- paste(curr$year,"-",curr$month,"-01",sep = "")
 curr <- curr %>%
